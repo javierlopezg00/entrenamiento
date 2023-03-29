@@ -58,6 +58,8 @@ export default function GetUserInfo() {
    * Obtener la recomendación del ejercicio.
    */
   const getExcerciseRecommendation = async () => {
+    setExcercisePrediction("Cargando...")
+    
     if (validateUserInformation()) {
       const response = await invoke("get_excercise_recommendation", {
         age: Number(userAge),
@@ -73,11 +75,8 @@ export default function GetUserInfo() {
         trainingIntensity: userTrainingIntensity,
       });
       setExcercisePrediction(response);
-
-      console.log("Enviando información del usuario");
     } else {
       setExcercisePrediction("Por favor, complete todos los campos.");
-      console.log("Faltan datos por completar");
     }
   };
 
