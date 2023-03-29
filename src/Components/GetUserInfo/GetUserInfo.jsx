@@ -31,7 +31,6 @@ export default function GetUserInfo() {
     number = allowDecimal ? number : number.replace(/\D/g, "");
     e.target.value = number;
     setFunction(number);
-    console.log(number);
 
     return number;
   };
@@ -58,8 +57,8 @@ export default function GetUserInfo() {
    * Obtener la recomendación del ejercicio.
    */
   const getExcerciseRecommendation = async () => {
-    setExcercisePrediction("Cargando...")
-    
+    setExcercisePrediction("Cargando...");
+
     if (validateUserInformation()) {
       const response = await invoke("get_excercise_recommendation", {
         age: Number(userAge),
