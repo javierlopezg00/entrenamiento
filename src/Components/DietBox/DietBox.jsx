@@ -15,33 +15,32 @@ export default function DietBox() {
         'X-RapidAPI-Host': 'edamam-recipe-search.p.rapidapi.com'
       }
     };
-    
+
     axios.request(options)
       .then(response => setDiet(response.data))
       .catch(error => console.error(error));
   }, []);
 
-
-
   return (
     <div className="dietContainer">
       <div className="dietContainerBox">
         {
-          diet.hits.map(recipeN => (
-            <div className="recipeBox" >
-              <div className="flexBox">
-                <p>kcal: {recipeN.recipe.calories.toFixed(2)}</p>
-                <p id='displayR'> {recipeN.recipe.cuisineType}</p> <p>'cuisine</p>
+          diet ? (
+            diet.hits.map(recipeN => (
+              <div className="recipeBox" key={recipeN.recipe.label}>
+                <div className="flexBox">
+                  <p>kcal: {recipeN.recipe.calories.toFixed(2)}</p>
+                  <p id='displayR'> {recipeN.recipe.cuisineType}</p> <p>'cuisine</p>
+                </div>
+                <h1 id='title'>{recipeN.recipe.label}</h1>
+                <img className='imagen' src={recipeN.recipe.image} alt={recipeN.recipe.label} />
+                <button className='recipeButton'>Recipe</button>
               </div>
-              <h1 id='title'>{recipeN.recipe.label}</h1>
-              <img className='imagen' src={recipeN.recipe.image} alt={recipeN.recipe.label} />
-              <button className='recipeButton'>Recipe</button>
-            </div>
-          ))
+            ))) : (
+              <h1>Loading...</h1>
+            )
         }
       </div>
     </div>
-  );
-  
-  
+  ); 
 }

@@ -1,17 +1,18 @@
-import { AiOutlineHome,  } from "react-icons/ai";
+import { AiOutlineHome, AiOutlineUser } from "react-icons/ai";
+import { BiDumbbell, BiNews } from "react-icons/bi";
+import { MdLightbulbOutline } from "react-icons/md";
 import MainButton from "../MainButtons/MainButton";
-
 
 export default function Footer(){
 
     return(
         <div>
             <div className="footer">
-                <MainButton text="Home" icon={<AiOutlineHome/>}></MainButton>
-                <MainButton text="News" icon={<AiOutlineHome/>}></MainButton>
-                <MainButton text="Coach" icon={<AiOutlineHome/>}></MainButton>
-                <MainButton text="Tips" icon={<AiOutlineHome/>}></MainButton>
-                <MainButton text="Profile" icon={<AiOutlineHome/>}></MainButton>
+                <MainButton text="Home" icon={<AiOutlineHome/>} link="/"></MainButton>
+                <MainButton text="News" icon={<BiNews/>} link="/diet"></MainButton>
+                <MainButton text="Coach" icon={<BiDumbbell/>} link="/diet"></MainButton>
+                <MainButton text="Tips" icon={<MdLightbulbOutline/>} link="/diet"></MainButton>
+                <MainButton text="Profile" icon={<AiOutlineUser/>} link="/diet"></MainButton>
             </div>
         </div>
     );

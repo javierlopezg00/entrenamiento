@@ -1,16 +1,13 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
+import { BrowserRouter as Router } from "react-router-dom";
 import App from "./App";
 import "./styles.scss";
-import Header from "./Components/Header/Header";
-import Footer from "./Components/Footer/Footer";
-
-import GetUserInfo from "./Components/GetUserInfo/GetUserInfo";
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
-    <Header />
-      <GetUserInfo />
-    <Footer />
+    <Router>
+      <App />
+    </Router>
   </React.StrictMode>
 );
