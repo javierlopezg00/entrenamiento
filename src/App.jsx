@@ -1,20 +1,23 @@
 import { useState } from "react";
 import { invoke } from "@tauri-apps/api/tauri";
+import { Routes, Route } from "react-router-dom";
 import "./App.css";
 
+import Header from "./Components/Header/Header";
+import Footer from "./Components/Footer/Footer";
+import GetUserInfo from "./Components/GetUserInfo/GetUserInfo";
+import Diet from "./Pages/Diet/Diet";
 
 function App() {
-  const [greetMsg, setGreetMsg] = useState("");
-  const [name, setName] = useState("");
-
-  async function greet() {
-    // Learn more about Tauri commands at https://tauri.app/v1/guides/features/command
-    setGreetMsg(await invoke("greet", { name }));
-  }
-
   return (
-    <div >
-    </div>
+    <>
+      <Header />
+      <Routes>
+        <Route path="/" element={<GetUserInfo />} />
+        <Route path="/diet" element={<Diet />} />
+      </Routes>
+      <Footer />
+    </>
   );
 }
 
