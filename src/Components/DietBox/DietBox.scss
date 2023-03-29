@@ -1,0 +1,69 @@
+$primary-color-black: #050a11;
+$secondary-color-hard-blue: #0e131b;
+$secondary-color-soft-blue: #1f2c38;
+$third-color-soft-freen: #2c8a5a;
+$secondary-green-shadow: #286e4a;
+$third-color-hard-freen: rgb(255, 255, 255);
+
+.dietContainerBox{
+    margin: 1em;
+    padding-right: 1.5em;
+    height: 20em;
+    text-align: center;
+    display: grid;
+    grid-template-columns: repeat(3, 10000fr);
+    gap: 2rem;
+}
+
+.dietDiv{
+    margin-top: 1em;
+    
+}
+.recipeBox{
+    min-width: 100%;
+    margin-top: 1%;
+    border: #ccc solid 2px;
+    height: 20em;
+    margin-left: 3%;
+}
+
+.recipeImg{
+    float: right;
+    max-width: 15%;
+    
+}
+.recipeButton{
+
+    width: 100%;
+    border-radius: 0;
+    background-color:$secondary-color-hard-blue;
+    color: white;
+    text-transform: uppercase;
+}
+
+.recipeButton:hover{
+    background-color: #2d2929;
+}
+
+
+.flexBox{
+    display: flex;
+    background-color: $secondary-green-shadow;
+    padding: 0.2% 1.5%;
+    
+}
+
+.imagen{
+    width: 40%;
+    position: static;
+}
+
+#displayR{
+    color: rgb(0, 25, 78);
+    margin-left: 15%;
+    text-transform: capitalize;
+}
+#title{
+    padding: 3%;
+    background-color: $third-color-soft-freen;
+}

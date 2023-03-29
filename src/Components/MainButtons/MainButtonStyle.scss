@@ -1,0 +1,21 @@
+$primary-color-black: #050a11;
+$secondary-color-hard-blue: #0e131b;
+$secondary-color-soft-blue: #1f2c38;
+$third-color-soft-freen: #599876;
+$third-color-hard-freen: rgb(255, 255, 255);
+
+*{
+    color: $third-color-hard-freen;
+}
+
+.containerButton{
+    width: 100%;
+    text-align: center;
+    padding-top: 0.7em;
+    border-right: rgba(255, 255, 255, 0.555) solid 1px;
+    margin: 0.5em 0 0.5em 0;
+}
+
+.containerButton:hover{
+    background-color: $secondary-color-soft-blue;
+}
