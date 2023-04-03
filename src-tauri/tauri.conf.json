@@ -27,7 +27,8 @@
         "icons/icon.icns",
         "icons/icon.ico"
       ],
-      "identifier": "com.pan.entrenamiento.personalizado",
+      "identifier": "com.ia.entrenamiento.personalizado",
+      "publisher": "IA",
       "targets": "all"
     },
     "security": {
