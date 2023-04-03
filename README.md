@@ -12,6 +12,7 @@
 
 1. Cumplir con los prerequisitos especificados en la [documentación de Tauri](https://tauri.app/v1/guides/getting-started/prerequisites).
 2. Ejecutar el comando `npm install` para instalar las dependencias.
-3. Ejecución del proyecto:
+3. Instalar las dependencias de Python con el comando `pip install -r requirements.txt`.
+4. Ejecución del proyecto:
     - `npm run tauri dev` para ejecutar en modo de desarrollo.
     - `npm run tauri build` para compilar el proyecto y generar el ejecutable.
