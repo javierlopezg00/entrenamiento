@@ -1,7 +1,7 @@
 {
   "build": {
-    "beforeDevCommand": "npm run dev",
-    "beforeBuildCommand": "npm run build",
+    "beforeDevCommand": "npm run pyinstaller && npm run dev",
+    "beforeBuildCommand": "npm run pyinstaller && npm run build",
     "devPath": "http://localhost:1420",
     "distDir": "../dist",
     "withGlobalTauri": false
@@ -15,7 +15,27 @@
       "all": false,
       "shell": {
         "all": false,
-        "open": true
+        "open": true,
+        "sidecar": true,
+        "scope": [
+          {
+            "name": "/src/model/exe/dist/training",
+            "sidecar": true,
+            "args": [
+              "--age",
+              "--height",
+              "--weight",
+              "--gender",
+              "--gymAccess",
+              "--strengthExp",
+              "--cardioExp",
+              "--timeAvailable",
+              "--trainingGoal",
+              "--trainingPreference",
+              "--trainingIntensity"
+            ]
+          }
+        ]
       }
     },
     "bundle": {
@@ -27,8 +47,12 @@
         "icons/icon.icns",
         "icons/icon.ico"
       ],
-      "identifier": "com.pan.entrenamiento.personalizado",
-      "targets": "all"
+      "identifier": "com.ia.entrenamiento.personalizado",
+      "publisher": "IA",
+      "targets": "msi",
+      "externalBin": [
+        "src/model/exe/dist/training"
+      ]
     },
     "security": {
       "csp": null
