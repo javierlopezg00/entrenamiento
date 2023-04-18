@@ -1,0 +1,21 @@
+$primary-color-black: #050a11;
+$secondary-color-hard-blue: #0e131b;
+$secondary-color-soft-blue: #1f2c38;
+$third-color-soft-freen: #599876;
+$third-color-hard-freen: rgb(255, 255, 255);
+
+
+.mainBox{
+    text-align: center;
+}
+.selectBox{
+    background-color: rgba(0, 0, 0, 0);
+    width: 50%;
+    border: white solid 3px;
+    margin: 1% 4%;
+    text-transform: uppercase;
+    font-size: 1.2em;
+    text-align: center;
+}
+
+

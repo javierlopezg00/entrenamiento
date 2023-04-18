@@ -10,9 +10,9 @@ export default function Footer(){
             <div className="footer">
                 <MainButton text="Home" icon={<AiOutlineHome/>} link="/"></MainButton>
                 <MainButton text="News" icon={<BiNews/>} link="/diet"></MainButton>
-                <MainButton text="Coach" icon={<BiDumbbell/>} link="/diet"></MainButton>
+                <MainButton text="Coach" icon={<BiDumbbell/>} link="/coach"></MainButton>
                 <MainButton text="Tips" icon={<MdLightbulbOutline/>} link="/diet"></MainButton>
-                <MainButton text="Profile" icon={<AiOutlineUser/>} link="/diet"></MainButton>
+                <MainButton text="Profile" icon={<AiOutlineUser/>} link="/Profile"></MainButton>
             </div>
         </div>
     );
