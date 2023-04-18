@@ -7,33 +7,27 @@ import numpy as np
 
 # Carga de modelos
 from tensorflow.keras.models import load_model
-from joblib import load
-from pkgutil import get_data
 
-# Librerías del sistema
-import sys
-import os
+# Preprocesamiento de datos
+from sklearn.preprocessing import StandardScaler
 
 # Carga de modelos
 import pkg_resources
-import pickle
 
-# Función IMC
-
-
+#Función IMC
 def imc(estatura, peso):
     kilos = peso/2.2
     indice = round(kilos / (estatura ** 2), 2)
     return indice
 
 
-# Función Grasa corporal
+#Función Grasa corporal
 def grasa_corporal(imc, edad, genero):
     gc = (1.20*imc)+(0.23*edad)-(10.8*genero)-5.4
     return round(gc, 2)
 
 
-# Funcion Grasa Magra
+#Funcion Grasa Magra
 def grasa_corporal_magra(peso,  imc):
     kilos = peso/2.2
 
@@ -187,26 +181,26 @@ def get_df(age, height, weight, fitness, health, eating_habits, fruit_consumptio
         'horas_entreno': [user_training_hours[training_hours]],
         'entreno_constante': [user_constant_training[constant_training]],
         'enfoque': [user_training_focus[focus]],
-        'areas__Abdomen': 1 if ('Abdomen' in training_areas) else [],
-        'areas__Brazo': 1 if ('Brazo' in training_areas) else [],
-        'areas__Cardio': 1 if ('Cardio' in training_areas) else [],
-        'areas__Espalda': 1 if ('Espalda' in training_areas) else [],
-        'areas__Pecho': 1 if ('Pecho' in training_areas) else [],
-        'areas__Pierna': 1 if ('Pierna' in training_areas) else [],
+        'areas__Abdomen': [1] if ('Abdomen' in training_areas) else [0],
+        'areas__Brazo': [1] if ('Brazo' in training_areas) else [0],
+        'areas__Cardio': [1] if ('Cardio' in training_areas) else [0],
+        'areas__Espalda': [1] if ('Espalda' in training_areas) else [0],
+        'areas__Pecho': [1] if ('Pecho' in training_areas) else [0],
+        'areas__Pierna': [1] if ('Pierna' in training_areas) else [0],
         'efectividad': [user_training_efficacy[efficacy]],
-        'consumo__Creatina': 1 if ('Creatina' in product_consumption) else [],
-        'consumo__Nada': 1 if ('Nada' in product_consumption) else [],
-        'consumo__Otro': 1 if ('Otro' in product_consumption) else [],
-        'consumo__Pre-Entreno': 1 if ('Pre-Entreno' in product_consumption) else [],
-        'consumo_proteina': 1 if ('Proteína' in product_consumption) else [],
+        'consumo__Creatina': [1] if ('Creatina' in product_consumption) else [0],
+        'consumo__Nada': [1] if ('Nada' in product_consumption) else [0],
+        'consumo__Otro': [1] if ('Otro' in product_consumption) else [0],
+        'consumo__Pre-Entreno': [1] if ('Pre-Entreno' in product_consumption) else [0],
+        'consumo_proteina': [1] if ('Proteína' in product_consumption) else [0],
         'horas_dormir': [user_sleep[sleep_hours]],
         'fuente_energia1': [user_energy_src_1[energy_src1]],
         'fuente_energia2': [user_energy_src_2[energy_src2]],
         'agua': [user_water_consumption[water_consumption]],
-        'motivo__Aumentodemasamuscular': 1 if ('Aumento de masa muscular' in training_objective) else [],
-        'motivo__Definicion_muscular': 1 if ('Definición muscular' in training_objective) else [],
-        'motivo__Perdida_Peso': 1 if ('Pérdida de Peso' in training_objective) else [],
-        'motivo__Salud': 1 if ('Salud' in training_objective) else [],
+        'motivo__Aumentodemasamuscular': [1] if ('Aumento de masa muscular' in training_objective) else [0],
+        'motivo__Definicion_muscular': [1] if ('Definición muscular' in training_objective) else [0],
+        'motivo__Perdida_Peso': [1] if ('Pérdida de Peso' in training_objective) else [0],
+        'motivo__Salud': [1] if ('Salud' in training_objective) else [0],
         'disponibilidad_tiempo': [user_time_available[time_available]],
         'experiencia_fuerza': [user_strength_or_cardio_exp[strength_exp]],
         'experiencia_cardio': [user_strength_or_cardio_exp[cardio_exp]],
@@ -218,7 +212,15 @@ def get_df(age, height, weight, fitness, health, eating_habits, fruit_consumptio
         'grasa_corporal_magra': [grasa_corporal_magra(weight, user_imc)],
     })
 
-    return df
+    # Estandarización de los datos
+    cols_to_exclude = ['preferencia_area']
+    scaler = StandardScaler()
+    df_scaled = scaler.fit_transform(df.drop(cols_to_exclude, axis=1))
+    df_scaled = pd.DataFrame(df_scaled, columns=df.drop(
+        cols_to_exclude, axis=1).columns)
+    df_scaled = pd.concat([df_scaled, df[cols_to_exclude]], axis=1)
+
+    return df_scaled
 
 
 def get_user_experience(age, height, weight, fitness, health, eating_habits, fruit_consumption, veggies_consumption, gender, training_days, training_hours, constant_training, focus, efficacy, sleep_hours, energy_src1, energy_src2, water_consumption, training_objective, time_available, strength_exp, cardio_exp, gym_access, preferred_area, intensity, physical_activities=[], training_areas=[], product_consumption=[]):
@@ -226,25 +228,12 @@ def get_user_experience(age, height, weight, fitness, health, eating_habits, fru
     Obtener la experiencia del usuario con base en sus datos, al proveerlos al modelo de IA.
     """
 
-    # # Get the path to the directory where the executable is being run from
-    # if getattr(sys, 'frozen', False):
-    #     # Running as an executable
-    #     app_dir = sys._MEIPASS
-    # else:
-    #     # Running as a normal Python script
-    #     app_dir = os.path.dirname(os.path.abspath(__file__))
-
-    # Load the model from the .pkl and .h5 files
-    encoder_model_path = pkg_resources.resource_filename(__name__, 'models/encoder.pkl')
+    # Cargar el modelo del archivo .h5
     mlp_path = pkg_resources.resource_filename(__name__, 'models/mlp.h5')
-
-    with open(encoder_model_path, 'rb') as f:
-        encoder = load(f)
-
     mlp = load_model(mlp_path)
 
     # Etiquetas de experiencia
-    labels = {
+    user_classes = {
         0: 'Intermedio',
         1: 'Principiante',
         2: 'Intermedio',
@@ -256,16 +245,17 @@ def get_user_experience(age, height, weight, fitness, health, eating_habits, fru
     df = get_df(age, height, weight, fitness, health, eating_habits, fruit_consumption, veggies_consumption, gender, training_days, training_hours, constant_training, focus, efficacy, sleep_hours, energy_src1,
                 energy_src2, water_consumption, training_objective, time_available, strength_exp, cardio_exp, gym_access, preferred_area, intensity, physical_activities, training_areas, product_consumption)
 
-    # Uso del modelo de K-Means y del encoder para asignar los clusters a los datos de entrada
-    cluster_labels = mlp.predict(df, verbose=0)
-    one_hot_labels = encoder.transform(cluster_labels.reshape(-1, 1))
+    # Uso del modelo para asignar los clusters a los datos de entrada
+    labels = mlp.predict(df, verbose=0)
 
     # Mapeo de los clusters a las etiquetas de experiencia
-    class_labels = np.argmax(one_hot_labels, axis=1)
-    class_labels = [labels[label] for label in class_labels]
+    class_labels = np.argmax(labels, axis=1)
+    class_labels = [user_classes[label] for label in class_labels]
 
-    # return class_labels[0]
-    return "Intermedio"
+    # print(class_labels)
+    # print(labels)
+
+    return class_labels[0]
 
 
 def get_excercise_recommendation(age, height, weight, gender, gym_access, strength_exp, cardio_exp, time_available, training_goal, training_preference, training_intensity):
@@ -298,21 +288,21 @@ def main():
     parser.add_argument('-a', '--age', type=int, required=True, help='Edad')
     parser.add_argument('-ht', '--height', type=float, required=True, help='Altura')
     parser.add_argument('-w', '--weight', type=float, required=True, help='Peso')
-    parser.add_argument('-f', '--fitness', type=int, required=True, help='Nivel de condición física')
-    parser.add_argument('-hlt', '--health', type=int, required=True, help='Nivel de salud')
-    parser.add_argument('-eh', '--eating_habits', type=int, required=True, help='Hábitos alimenticios')
-    parser.add_argument('-fc', '--fruit_consumption', type=int, required=True, help='Consumo de frutas')
-    parser.add_argument('-vc', '--veggies_consumption', type=int, required=True, help='Consumo de verduras')
+    parser.add_argument('-f', '--fitness', type=int, required=False, help='Nivel de condición física')
+    parser.add_argument('-hlt', '--health', type=int, required=False, help='Nivel de salud')
+    parser.add_argument('-eh', '--eating_habits', type=int, required=False, help='Hábitos alimenticios')
+    parser.add_argument('-fc', '--fruit_consumption', type=int, required=False, help='Consumo de frutas')
+    parser.add_argument('-vc', '--veggies_consumption', type=int, required=False, help='Consumo de verduras')
     parser.add_argument('-g', '--gender', type=str, required=True, help='Género')
-    parser.add_argument('-td', '--training_days', type=str, required=True, help='Días de entrenamiento')
-    parser.add_argument('-th', '--training_hours', type=str, required=True, help='Horas de entrenamiento')
-    parser.add_argument('-ct', '--constant_training', type=str, required=True, help='Entrenamiento constante')
-    parser.add_argument('-fcs', '--focus', type=str, required=True, help='Enfoque')
-    parser.add_argument('-ef', '--efficacy', type=str, required=True, help='Eficacia')
-    parser.add_argument('-sh', '--sleep_hours', type=str, required=True, help='Horas de sueño')
-    parser.add_argument('-es1', '--energy_src1', type=str, required=True, help='Fuente de energía 1')
-    parser.add_argument('-es2', '--energy_src2', type=str, required=True, help='Fuente de energía 2')
-    parser.add_argument('-wc', '--water_consumption', type=str, required=True, help='Consumo de agua')
+    parser.add_argument('-td', '--training_days', type=str, required=False, help='Días de entrenamiento')
+    parser.add_argument('-th', '--training_hours', type=str, required=False, help='Horas de entrenamiento')
+    parser.add_argument('-ct', '--constant_training', type=str, required=False, help='Entrenamiento constante')
+    parser.add_argument('-fcs', '--focus', type=str, required=False, help='Enfoque')
+    parser.add_argument('-ef', '--efficacy', type=str, required=False, help='Eficacia')
+    parser.add_argument('-sh', '--sleep_hours', type=str, required=False, help='Horas de sueño')
+    parser.add_argument('-es1', '--energy_src1', type=str, required=False, help='Fuente de energía 1')
+    parser.add_argument('-es2', '--energy_src2', type=str, required=False, help='Fuente de energía 2')
+    parser.add_argument('-wc', '--water_consumption', type=str, required=False, help='Consumo de agua')
     parser.add_argument('-to', '--training_objective', type=str, nargs='*', required=True, help='Objetivo(s) de entrenamiento')
     parser.add_argument('-tav', '--time_available', type=str, required=True, help='Tiempo disponible')
     parser.add_argument('-se', '--strength_exp', type=str, required=True, help='Experiencia en fuerza')
@@ -321,8 +311,8 @@ def main():
     parser.add_argument('-par', '--preferred_area', type=str, required=True, help='Área de entrenamiento preferida')
     parser.add_argument('-i', '--intensity', type=str, required=True, help='Intensidad')
     parser.add_argument('-pac', '--physical_activities', type=str, required=True, help='Actividades físicas')
-    parser.add_argument('-tar', '--training_areas', type=str, nargs='*', required=True, help='Áreas de entrenamiento')
-    parser.add_argument('-pc', '--product_consumption', type=str, nargs='*', required=True, help='Consumo de productos')
+    parser.add_argument('-tar', '--training_areas', type=str, nargs='*', required=False, help='Áreas de entrenamiento')
+    parser.add_argument('-pc', '--product_consumption', type=str, nargs='*', required=False, help='Consumo de productos')
 
     args = parser.parse_args()
     recommendation = None
@@ -391,7 +381,7 @@ def main():
             args.product_consumption,
         )
 
-    print(recommendation)
+    print("Experiencia: ", recommendation)
     return recommendation
 
 
