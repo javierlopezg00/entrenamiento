@@ -68,6 +68,23 @@ modelo = LinearRegression().fit(x_train, y_train)
 
 prediccion_test = modelo.predict(x_test)
 
+def predict_calories(age, height, weight, gender, days, hours):
+    input_data = pd.DataFrame({
+        'Edad': [age],
+        'Altura': [height],
+        'Peso': [weight],
+        'dias_entreno': [days],
+        'horas_entreno': [hours],
+        'genero': [gender],
+        'factor_actividad': [factor_actividad(days, hours)]
+    })
+
+    recommendation = modelo.predict(
+        input_data
+    )
+
+    return round(recommendation[0][0],2)
+
 
 def main():
     """
