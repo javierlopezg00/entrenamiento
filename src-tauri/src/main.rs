@@ -1,10 +1,16 @@
 // Prevents additional console window on Windows in release, DO NOT REMOVE!!
 #![cfg_attr(not(debug_assertions), windows_subsystem = "windows")]
 
-use pyo3::{Python, types::PyModule};
+use tauri::api::process::{Command, CommandEvent};
+
+// fn write_arg_to_car(mut child: CommandChild, arg_name: &str, arg: &str) {
+//     child
+//         .write(format!("--{}={}\n", arg_name, arg).as_bytes())
+//         .unwrap();
+// }
 
 #[tauri::command]
-fn get_excercise_recommendation(
+async fn get_excercise_recommendation(
     age: i16,
     height: f32,
     weight: f32,
@@ -16,36 +22,47 @@ fn get_excercise_recommendation(
     training_goal: String,
     training_preference: String,
     training_intensity: String,
-) -> String {
-    pyo3::prepare_freethreaded_python();
+) -> Result<String, String> {
+    // Create the command
+    let sidecar = Command::new_sidecar("training").expect("Failed to spawn sidecar");
+    let mut cmd_args_str = String::new();
 
-    let py_file = include_str!("./model/training.py");
+    // Append all the arguments to the command string
+    cmd_args_str.push_str(format!("--age={} ", age).as_str());
+    cmd_args_str.push_str(format!("--height={} ", height).as_str());
+    cmd_args_str.push_str(format!("--weight={} ", weight).as_str());
+    cmd_args_str.push_str(format!("--gender=\"{}\" ", gender).as_str());
+    cmd_args_str.push_str(format!("--gymAccess=\"{}\" ", gym_access).as_str());
+    cmd_args_str.push_str(format!("--strengthExp=\"{}\" ", strength_exp).as_str());
+    cmd_args_str.push_str(format!("--cardioExp=\"{}\" ", cardio_exp).as_str());
+    cmd_args_str.push_str(format!("--timeAvailable=\"{}\" ", time_available).as_str());
+    cmd_args_str.push_str(format!("--trainingGoal=\"{}\" ", training_goal).as_str());
+    cmd_args_str.push_str(format!("--trainingPreference=\"{}\" ", training_preference).as_str());
+    cmd_args_str.push_str(format!("--trainingIntensity=\"{}\"", training_intensity).as_str());
 
-    Python::with_gil(|py| {
-        let py_module = PyModule::from_code(py, py_file, "training.py", "training").unwrap();
-        let py_func = py_module.getattr("get_excercise_recommendation").unwrap();
-        let py_result = py_func
-            .call1((
-                age,
-                height,
-                weight,
-                gender,
-                gym_access,
-                strength_exp,
-                cardio_exp,
-                time_available,
-                training_goal,
-                training_preference,
-                training_intensity,
-            ))
-            .unwrap();
-        let result: String = py_result.extract().unwrap();
+    // Add the arguments to the command and spawn it
+    let sidecar = sidecar.args(cmd_args_str.split_whitespace());
+    let (mut rx, child) = sidecar.spawn().expect("Failed to spawn sidecar");
+    drop(child);
 
-        result
-    })
+    // Read the output from the child process
+    let mut output = String::new();
+    while let Some(event) = rx.recv().await {
+        if let CommandEvent::Stdout(line) = event {
+            output.push_str(&line);
+        }
+
+        // if let CommandEvent::Stderr(line) = event {
+        //     output.push_str(&line);
+        // }
+    }
+
+    Ok(output)
 }
 
 fn main() {
+    std::env::set_var("RUST_BACKTRACE", "full"); // Enable backtraces for debugging
+
     tauri::Builder::default()
         .invoke_handler(tauri::generate_handler![get_excercise_recommendation])
         .run(tauri::generate_context!())

@@ -1,3 +1,6 @@
+# Obtención de los argumentos del CLI
+from argparse import ArgumentParser
+
 # Análisis y procesamiento de datos
 import pandas as pd
 
@@ -13,7 +16,7 @@ from sklearn.tree import DecisionTreeClassifier
 df = pd.read_csv(
     "https://raw.githubusercontent.com/javierlopezg00/entrenamiento/main/src-tauri/src/model/dataLimpia.csv")
 
-# Extración y reducción de los atributos empleando PCA
+# Extracción y reducción de los atributos empleando PCA
 pca = PCA(n_components=3)
 pca.fit(df)
 df_pca = pca.transform(df)
@@ -98,3 +101,53 @@ def get_excercise_recommendation(age, height, weight, gender, gym_access, streng
     }
 
     return cluster_map[recommendation]
+
+
+def main():
+    """
+    Obtener los argumentos de la línea de comandos y ejecutar la función get_excercise_recommendation.
+    """
+
+    parser = ArgumentParser()
+    parser.add_argument('-a', '--age', type=int, required=True, help='Edad')
+    parser.add_argument('-ht', '--height', type=int,
+                        required=True, help='Altura')
+    parser.add_argument('-w', '--weight', type=int, required=True, help='Peso')
+    parser.add_argument('-g', '--gender', type=str,
+                        required=True, help='Género')
+    parser.add_argument('-ga', '--gymAccess', type=bool,
+                        required=True, help='Si cuenta con acceso a un gimnasio')
+    parser.add_argument('-se', '--strengthExp', type=bool, required=True,
+                        help='Si cuenta con experiencia en ejercicios de fuerza')
+    parser.add_argument('-ce', '--cardioExp', type=bool, required=True,
+                        help='Si cuenta con experiencia en ejercicios cardiovasculares')
+    parser.add_argument('-ta', '--timeAvailable', type=str,
+                        required=True, help='Tiempo disponible para ejercitarse')
+    parser.add_argument('-tg', '--trainingGoal', type=str,
+                        required=True, help='Meta del entrenamiento')
+    parser.add_argument('-tp', '--trainingPreference', type=str,
+                        required=True, help='Preferencia de entrenamiento')
+    parser.add_argument('-ti', '--trainingIntensity', type=str,
+                        required=True, help='Intensidad del entrenamiento')
+    args = parser.parse_args()
+
+    recommendation = get_excercise_recommendation(
+        args.age,
+        args.height,
+        args.weight,
+        args.gender,
+        args.gymAccess,
+        args.strengthExp,
+        args.cardioExp,
+        args.timeAvailable,
+        args.trainingGoal,
+        args.trainingPreference,
+        args.trainingIntensity
+    )
+
+    print(recommendation)
+    return recommendation
+
+
+if __name__ == '__main__':
+    main()
