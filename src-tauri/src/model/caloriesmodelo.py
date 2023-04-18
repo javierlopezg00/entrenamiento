@@ -18,6 +18,9 @@ from sklearn.linear_model import LinearRegression
 # Métricas
 from sklearn import metrics
 
+# Guardado de modelos
+import joblib
+
 df = pd.read_csv(
     "https://raw.githubusercontent.com/javierlopezg00/entrenamiento/main/src-tauri/src/model/dataLimpia.csv")
 
@@ -33,10 +36,10 @@ def factor_actividad(dias, horas):
     elif(dias == 0):
         #Si entrena 3-4 veces por semana
         factor = 1.55
-    elif(dias == 3 or (dias == 2 and horas != 3)):
+    elif((dias == 3 or dias == 2) and horas != 3):
         #Si entrena 5-7 veces por semana
         factor = 1.725
-    elif(dias == 3 or (dias == 2 and horas == 3)):
+    elif((dias == 3 or dias == 2) and horas == 3):
         #Si entrena más de 4 horas al día de 5-7 a veces por semana
         factor = 1.9
     return factor
@@ -68,7 +71,16 @@ modelo = LinearRegression().fit(x_train, y_train)
 
 prediccion_test = modelo.predict(x_test)
 
+#Guardar Modelo
+joblib.dump(modelo,"models/modelo_calorias.pkl")
+
+
+
 def predict_calories(age, height, weight, gender, days, hours):
+
+    #Modleo entrenado
+    modelo_entrenado = joblib.load("models/modelo_calorias.pkl")
+
     input_data = pd.DataFrame({
         'Edad': [age],
         'Altura': [height],
@@ -79,7 +91,7 @@ def predict_calories(age, height, weight, gender, days, hours):
         'factor_actividad': [factor_actividad(days, hours)]
     })
 
-    recommendation = modelo.predict(
+    recommendation = modelo_entrenado.predict(
         input_data
     )
 
