@@ -16,6 +16,7 @@ export default function GetUserData() {
   //Formulario 2
   const [userTrainingDays, setUserTrainingDays] = useState("-1");
   const [userTrainingHours, setUserTrainingHours] = useState("-1");
+  const [userTrainingYears, setUserTrainingYears] = useState("-1");
   const [userFocus, setUserFocus] = useState("-1");
   const [userAreaCardio, setUserAreaCardio] = useState("0");
   const [userAreaChest, setUserAreaChest] = useState("0");
@@ -89,6 +90,53 @@ export default function GetUserData() {
     setDoesExcercise(e.target.value);
   }
   
+  const guardarData=()=>{
+    const url = 'http://localhost:3000/api/v1/userInfo/createUserInfo';
+
+    let formData = new FormData();
+    formData.append('idUser', JSON.parse(localStorage.getItem("username")));
+    formData.append('age', userAge);
+    formData.append('height', userWeight);
+    formData.append('gender', userGender);
+    formData.append('physicalState', userPhysicalState);
+    formData.append('health', userHealth);
+    formData.append('feedingHabits', eatingHabits);
+    formData.append('fruits', fruit);
+    formData.append('vegetables', vegetables);
+    formData.append('water', water);
+    formData.append('physicalActivity', doesExcercise);
+    formData.append('trainingReason', 1);
+    formData.append('levelPreferred', userTrainingIntensity);
+    formData.append('areaPreferred', userTrainingPreference);
+    formData.append('timeAvailability', userTimeAvailability);
+    formData.append('gymAccess', userGymAccess);
+    formData.append('expStrenght', userExperienceStrength);
+    formData.append('expCardiovascular', userExperienceCardio);
+    formData.append('areaAbdominals', userAreaAbs);
+    formData.append('areaArms', userAreaArm);
+    formData.append('areaCardio', userAreaCardio);
+    formData.append('areaBack', userAreaBack);
+    formData.append('areaChest', userAreaChest);
+    formData.append('trainingDays', userTrainingDays);
+    formData.append('trainingHours', userTrainingHours);
+    formData.append('constantTraining' )
+
+
+
+    axios.post(url, formData,  {
+      headers: {
+          'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
+      }})
+    .then((response)=>{
+        console.log(response);
+
+    })
+    .catch((response)=>{
+        console.log(response);
+      });
+  }
+
+
   /**
    * Validar que los datos del usuario estén completos.
    *
@@ -231,6 +279,20 @@ export default function GetUserData() {
           <option value="1">1-2 hours</option>
           <option value="4">2-3 hours</option>
           <option value="3">More than 3 hours</option>
+        </select>
+        <select
+          className="inputStyle"
+          id="selectGetUser"
+          onChange={(e) => setUserTrainingHours(e.target.value)}
+        >
+          <option value="-1" disabled selected>
+            How many years have you been training?
+          </option>
+          <option value="0">Less than 1 year</option>
+          <option value="2">1-2</option>
+          <option value="1">3-4</option>
+          <option value="3">5-6</option>
+          <option value="4">7 or more</option>
         </select>
         <select
           className="inputStyle"
