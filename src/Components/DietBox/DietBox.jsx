@@ -4,6 +4,7 @@ import React, { useState, useEffect } from 'react';
 
 export default function DietBox() {
   const [diet, setDiet] = useState(null);
+  const [calories, setCalories] = useState(-1);
 
   useEffect(() => {
     const options = {
@@ -19,10 +20,22 @@ export default function DietBox() {
     axios.request(options)
       .then(response => setDiet(response.data))
       .catch(error => console.error(error));
+    
+      if (localStorage.getItem('calories')) {
+        setCalories(localStorage.getItem('calories'));
+      }
   }, []);
 
   return (
     <div className="dietContainer">
+      <div className="caloriesContainer">
+      {calories !== -1 ? (
+        <p id="calories">Caloric intake: {calories}</p>
+      ) : (
+        <p id="calories-missing-data">Please, fill in all the fields in the home section to determine your caloric intake</p>
+      )}
+      </div>
+        
       <div className="dietContainerBox">
         {
           diet ? (
