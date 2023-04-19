@@ -18,7 +18,7 @@ function App() {
   const [views, setViews]=useState([])
   
 
-  const viewsLogged = [
+  const appViews = [
     {
       name: "Profile",
       path: "/Profile",
@@ -79,11 +79,7 @@ function App() {
       name: "Glutes",
       path: "/Glutes",
       component: Exercises
-    }
-  ];
-
-  const viewsNotLogged = [
-    
+    },
     {
       name: "SignIn",
       path: "/SignIn",
@@ -93,11 +89,6 @@ function App() {
       name: "SignUp",
       path: "/SignUp",
       component: SignUp,
-    },
-    {
-      name: "Register",
-      path: "/Register",
-      component: GetUserData,
     }
   ];
 
@@ -116,19 +107,16 @@ function App() {
   return (
     <>
       <Header />
-      {username!=''? 
       <Routes>
-        {viewsLogged.map((view) => (
+        {appViews.map((view) => (
           <Route key={view.name}  path={view.path} element={view.component()} />
-        ))}
+          ))}
+          {username != '' ?
         <Route path="*" element={<Navigate replace to="/" />} />
-      </Routes>:
-      <Routes>
-      {viewsNotLogged.map((view) => (
-        <Route key={view.name}  path={view.path} element={view.component()} />
-      ))}
-      <Route path="*" element={<Navigate replace to="/SignIn" />} />
-    </Routes>}
+          :
+        <Route path="*" element={<Navigate replace to="/SignIn" />} />
+          }
+      </Routes>
       <Footer />
     </>
   );
