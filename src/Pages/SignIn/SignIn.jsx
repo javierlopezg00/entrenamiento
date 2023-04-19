@@ -1,6 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import './SignIn.scss'
+<<<<<<< HEAD
 import axios from "axios";
+=======
+import { useNavigate } from 'react-router-dom';
+import axios from 'axios'
+>>>>>>> 0177cb0a25be3f03751887e37730c9990ced8ed7
 
 export default function SignIn(){
     useEffect(() => {
@@ -9,6 +14,8 @@ export default function SignIn(){
           .then(response => setExercises(response.data))
           .catch(error => console.error(error));
       }, [muscleSelected]);
+
+    //history = useNavigate();
 
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
@@ -25,6 +32,7 @@ export default function SignIn(){
         event.preventDefault();
         console.log("Username:", username);
         console.log("Password:", password);
+<<<<<<< HEAD
       
         const options = {
           method: 'POST',
@@ -55,6 +63,24 @@ export default function SignIn(){
           });
       };
       
+=======
+
+        
+
+
+        const url = 'http://localhost:3000/api/v1/users/login/';
+
+        axios.get(url+username).then(response => response.data)
+            .then((data) => {
+              localStorage.setItem("username", data[0].id);
+              console.log(data);
+              //history("/diet");
+              window.location.reload(true);
+
+            });
+
+    }
+>>>>>>> 0177cb0a25be3f03751887e37730c9990ced8ed7
 
     return(
         <div className="mainSigInBox">

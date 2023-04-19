@@ -1,7 +1,26 @@
+.mainInfoContainer{
+  margin-bottom: 90px;
+}
+
 .getInfoContainer {
   width: 90%;
   border: solid #ccc 5px;
   margin: 1% auto 1% auto;
+  padding: 1%;
+  position: relative;
+}
+
+.checks {
+  width: 90%;
+  //border: solid #ccc 5px;
+  margin: 1% auto 1% auto;
+  padding: 0%;
+}
+
+.checkbox {
+  width: 5%;
+  border: solid #ccc 5px;
+  //margin: 1% 0% 1% 0%;
   padding: 2%;
 }
 

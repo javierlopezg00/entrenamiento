@@ -5,23 +5,11 @@ from argparse import ArgumentParser
 import pandas as pd
 import numpy as np
 
-# Visualización de datos
-import matplotlib.pyplot as plt
-import seaborn as sns
-
 # Modelos de aprendizaje
-from sklearn.metrics import accuracy_score
-from sklearn.model_selection import train_test_split
 from sklearn.linear_model import LinearRegression
-#from sklearn.preprocessing import MinMaxScaler
 
-# Métricas
-from sklearn import metrics
-
-df = pd.read_csv(
-    "https://raw.githubusercontent.com/javierlopezg00/entrenamiento/main/src-tauri/src/model/dataLimpia.csv")
-
-df = df[["Edad", "Altura", "Peso", "dias_entreno", "horas_entreno", "genero"]]
+# Carga del modelo
+from pickle import load
 
 #Calcular Factor de Actividad
 def factor_actividad(dias, horas):
@@ -41,38 +29,25 @@ def factor_actividad(dias, horas):
         factor = 1.9
     return factor
 
-#Añadir columna de factor de actividad
-df = df.assign(factor_actividad=df.apply(lambda row: factor_actividad(row['dias_entreno'], row['horas_entreno']), axis=1))
 
-
-#Calcular calorías diarias recomendadas
-def calorias (edad, genero, peso, altura, factor_actividad):
-    consumo = 0
-    if(genero == 0):
-        consumo = (655 + (9.6 * peso/2.2))  +  ((1.8 * altura*100) - (4.7 * edad)) * factor_actividad
-    else:
-        consumo = (66 + (13.7 * peso/2.2))  +  ((5 * altura*100) - (6.8 * edad)) * factor_actividad
-    return round(consumo,2)
-
-#Añadir columna de consumo de calorías 
-df = df.assign(calorias_consumo=df.apply(lambda row: calorias(row['Edad'], row['genero'], row['Peso'], row['Altura'], row['factor_actividad']), axis=1))
-
-
-#Separar test y train
-x = df[["Edad", "Altura", "Peso", "dias_entreno", "horas_entreno", "genero", "factor_actividad"]]
-y = df[["calorias_consumo"]]
-
-x_train, x_test, y_train, y_test = train_test_split(x, y, test_size=0.2, random_state=42)
-
-modelo = LinearRegression().fit(x_train, y_train)
-
-prediccion_test = modelo.predict(x_test)
-
+def get_df(age, height, weight, days, hours, gender):
+    return pd.DataFrame({
+        'Edad': [age],
+        'Altura': [height],
+        'Peso': [weight],
+        'dias_entreno': [days],
+        'horas_entreno': [hours],
+        'genero': [gender],
+        'factor_actividad': [factor_actividad(days, hours)]
+    })
 
 def main():
     """
     Obtener los argumentos de la línea de comandos y ejecutar la función get_excercise_recommendation.
     """
+
+    model_path = pkg_resources.resource_filename(__name__, 'models/linear_reg.pkl')
+    modelo = load(open(model_path, 'rb'))
 
     parser = ArgumentParser()
     parser.add_argument('-a', '--age', type=int, required=True, help='Edad')

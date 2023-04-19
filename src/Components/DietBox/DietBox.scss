@@ -67,3 +67,24 @@ $third-color-hard-freen: rgb(255, 255, 255);
     padding: 3%;
     background-color: $third-color-soft-freen;
 }
+
+#calories-missing-data {
+    width: 100%;
+    height: 3em;
+    background-color: $secondary-green-shadow;
+    color: white;
+    font-weight: bold;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#calories {
+    width: 100%;
+    height: 3em;
+    background-color: $secondary-color-soft-blue;
+    color: $third-color-hard-freen;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
