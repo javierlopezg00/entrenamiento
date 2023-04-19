@@ -27,6 +27,12 @@ function App() {
     {
       name: "Home",
       path: "/",
+      component: Profile,
+    },
+    ,
+    {
+      name: "Register",
+      path: "/Register",
       component: GetUserData,
     },
     {
@@ -87,6 +93,11 @@ function App() {
       name: "SignUp",
       path: "/SignUp",
       component: SignUp,
+    },
+    {
+      name: "Register",
+      path: "/Register",
+      component: GetUserData,
     }
   ];
 
@@ -98,8 +109,8 @@ function App() {
   const[username, setUsername] = useState(getUsername);
 
   useEffect(()=>{
-    localStorage.setItem('username', JSON.stringify(username));
-    console.log(localStorage.getItem('username'))
+    //localStorage.setItem('username', JSON.stringify(username));
+    //console.log(localStorage.getItem('username'))
   })
 
   return (

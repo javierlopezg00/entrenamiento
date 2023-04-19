@@ -1,11 +1,17 @@
 import { useState, useEffect } from "react";
 import { invoke } from "@tauri-apps/api/tauri";
 import "./GetUserInfo.scss";
+import { useNavigate } from 'react-router-dom';
 
 import axios from 'axios'
 
 export default function GetUserData() {
   // Estado de la informacion del usuario
+
+  function signOut() {
+    localStorage.setItem("username", JSON.stringify(""));
+    window.location.reload(false);
+}
 
   //Formulario 1
   const [userAge, setUserAge] = useState("");
@@ -146,11 +152,13 @@ export default function GetUserData() {
     axios.post(url, datos)
     .then((response)=>{
         console.log(response);
-
+        signOut()
     })
     .catch((response)=>{
         console.log(response);
       });
+
+      
   }
 
   const getCalories = async () => {
@@ -721,18 +729,16 @@ export default function GetUserData() {
           <option value="5">Back</option>
           <option value="6">Arms</option>
         </select>
-        <button className="buttonStyle" onClick={guardarData}>
-          Save Data
-        </button>
       </div>
 
       <div className="getInfoContainer">
-        <p className="textStyle">
-          Dificultad recomendada: {predictedDifficulty}
-        </p>
-      </div>
-
-      <div className="getInfoContainer">
+        {calories.length === 0 ? (
+          <button className="buttonStyle" onClick={getExcerciseRecommendation}>
+            Calculate Difficulty
+          </button>
+        ) : (
+          <p className="textStyle">Difficulty: {predictedDifficulty}</p>
+        )}
         {calories.length === 0 ? (
           <button className="buttonStyle" onClick={getCalories}>
             Calculate Calories
@@ -741,7 +747,11 @@ export default function GetUserData() {
           <p className="textStyle">Calories: {calories}</p>
         )}
       </div>
-      <div className="medium-sep" />
+      <div className="getInfoContainer">
+        <button className="buttonStyle" onClick={guardarData}>
+            Save Data
+        </button>
+      </div>
     </div>
   );
 }
