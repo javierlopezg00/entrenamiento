@@ -13,13 +13,17 @@ export default function Profile(){
                 let userName = JSON.parse(localStorage.getItem("username"));
                 const url = 'http://localhost:3000/api/v1/userInfo/';
     
-                axios.get(url+userName).then(response => response.data)
+                axios.get(url+1).then(response => response.data)
                 .then((data) => {
                   //localStorage.setItem("username", data[0].id);
+                  console.log(data);
                   console.log(data[0]);
+
+                  data[0].caloriesPrediction = localStorage.getItem("calories");
+                  data[0].trainingPrediction = localStorage.getItem("predictedDifficulty");
+                  
                   setUserData(data[0]);
                   //history("/diet");
-    
                 });
         
               }, []);
