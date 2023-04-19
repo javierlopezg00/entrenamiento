@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import { invoke } from "@tauri-apps/api/tauri";
 import { Routes, Route, Navigate} from "react-router-dom";
 import "./App.css";
@@ -14,11 +15,19 @@ import SignUp from "./Pages/SignUp/SignUp";
 import Profile from "./Pages/Profile/Profile";
 
 function App() {
+  const navigate = useNavigate();
+  
+  useEffect(() => {
+    if (getUsername() !== '') {
+      navigate('/diet');
+    }
+  }, []);
+  
 
   const [views, setViews]=useState([])
   
 
-  const viewsLogged = [
+  const appViews = [
     {
       name: "Profile",
       path: "/Profile",
@@ -79,11 +88,7 @@ function App() {
       name: "Glutes",
       path: "/Glutes",
       component: Exercises
-    }
-  ];
-
-  const viewsNotLogged = [
-    
+    },
     {
       name: "SignIn",
       path: "/SignIn",
@@ -93,11 +98,6 @@ function App() {
       name: "SignUp",
       path: "/SignUp",
       component: SignUp,
-    },
-    {
-      name: "Register",
-      path: "/Register",
-      component: GetUserData,
     }
   ];
 
@@ -116,19 +116,16 @@ function App() {
   return (
     <>
       <Header />
-      {username!=''? 
       <Routes>
-        {viewsLogged.map((view) => (
+        {appViews.map((view) => (
           <Route key={view.name}  path={view.path} element={view.component()} />
-        ))}
+          ))}
+          {username != '' ?
         <Route path="*" element={<Navigate replace to="/" />} />
-      </Routes>:
-      <Routes>
-      {viewsNotLogged.map((view) => (
-        <Route key={view.name}  path={view.path} element={view.component()} />
-      ))}
-      <Route path="*" element={<Navigate replace to="/SignIn" />} />
-    </Routes>}
+          :
+            <Route path="*" element={<Navigate replace to="/SignUp" />} />
+          }
+      </Routes>
       <Footer />
     </>
   );

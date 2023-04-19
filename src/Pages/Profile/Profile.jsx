@@ -1,4 +1,5 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
 import './Profile.scss';
 import { useState, useEffect } from "react";
 import axios from 'axios'
@@ -9,19 +10,24 @@ export default function Profile(){
 
             const [userData, setUserData] = useState({})
             const [personalData, setPersonalData] = useState({})
+            const navigate = useNavigate();
 
             useEffect(() => {
+                if (localStorage.getItem("username") === null || localStorage.getItem("username") === undefined || localStorage.getItem("username") === "") {
+                  navigate('/SignIn');
+                }
+              
                 let userName = JSON.parse(localStorage.getItem("username"));
                 const url = 'http://localhost:3000/api/v1/userInfo/';
                 const personalInfoURL = 'http://localhost:3000/api/v1/users/';
     
-                axios.get(url+userName).then(response => response.data)
+                axios.get(url+1).then(response => response.data)
                 .then((data) => {
-                  console.log(data[0])
-                  //localStorage.setItem("username", data[0].id);
+                  data[0].caloriesPrediction = localStorage.getItem("calories");
+                  data[0].trainingPrediction = localStorage.getItem("predictedDifficulty");
+                  
                   setUserData(data[0]);
                   //history("/diet");
-    
                 });
 
                 axios.get(personalInfoURL+userName).then(response => response.data)
@@ -87,7 +93,7 @@ export default function Profile(){
                 }
               }
 
-              function timeAvailability(exercisePredict){
+              function exerciseType(exercisePredict){
                 if(exercisePredict == 1 || exercisePredict == 3){
                   return "Beginner"
                 }else if(exercisePredict == 0 || exercisePredict == 2){
@@ -113,7 +119,7 @@ export default function Profile(){
               <h4>Daily Calories: </h4> <p>{userData.caloriesPrediction} kcal</p>
             </div>
             <div  className="infoDiv" >  
-              <h4>Trainning type:  </h4> <p>{timeAvailability(userData.trainingPrediction)}</p>
+              <h4>Trainning type:  </h4> <p>{exerciseType(userData.trainingPrediction)}</p>
             </div>
 
             <h3 className="infoDiv" >Personal Status</h3> 
