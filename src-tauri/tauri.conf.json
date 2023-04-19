@@ -1,7 +1,7 @@
 {
   "build": {
-    "beforeDevCommand": "npm run pyinstaller_nn && npm run pyinstaller_linreg && npm run dev",
-    "beforeBuildCommand": "npm run pyinstaller_nn && npm run pyinstaller_linreg && npm run build",
+    "beforeDevCommand": "npm run pyinstaller && npm run dev",
+    "beforeBuildCommand": "npm run pyinstaller && npm run build",
     "devPath": "http://localhost:1420",
     "distDir": "../dist",
     "withGlobalTauri": false
@@ -19,51 +19,20 @@
         "sidecar": true,
         "scope": [
           {
-            "name": "/src/model/exe/dist_nn/training",
+            "name": "/src/model/exe/dist/training",
             "sidecar": true,
             "args": [
-              "--prediction",
-              "--experience",
               "--age",
               "--height",
               "--weight",
-              "--fitness",
-              "--health",
-              "--eating_habits",
-              "--fruit_consumption",
-              "--veggies_consumption",
               "--gender",
-              "--training_days",
-              "--training_hours",
-              "--constant_training",
-              "--focus",
-              "--efficacy",
-              "--sleep_hours",
-              "--energy_src1",
-              "--energy_src2",
-              "--water_consumption",
-              "--training_objective",
-              "--time_available",
-              "--strength_exp",
-              "--cardio_exp",
-              "--gym_access",
-              "--preferred_area",
-              "--intensity",
-              "--physical_activities",
-              "--training_areas",
-              "--product_consumption"
-            ]
-          },
-          {
-            "name": "/src/model/exe/dist_linreg/calories",
-            "sidecar": true,
-            "args": [
-              "--age",
-              "--height",
-              "--weight",
-              "--days",
-              "--hours",
-              "--gender"
+              "--gymAccess",
+              "--strengthExp",
+              "--cardioExp",
+              "--timeAvailable",
+              "--trainingGoal",
+              "--trainingPreference",
+              "--trainingIntensity"
             ]
           }
         ]
@@ -82,8 +51,7 @@
       "publisher": "IA",
       "targets": "msi",
       "externalBin": [
-        "src/model/exe/dist_nn/training",
-        "src/model/exe/dist_linreg/calories"
+        "src/model/exe/dist/training"
       ]
     },
     "security": {

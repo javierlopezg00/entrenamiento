@@ -2,6 +2,8 @@ import { useState, useEffect } from "react";
 import { invoke } from "@tauri-apps/api/tauri";
 import "./GetUserInfo.scss";
 
+import axios from 'axios'
+
 export default function GetUserData() {
   // Estado de la informacion del usuario
 
@@ -719,7 +721,7 @@ export default function GetUserData() {
           <option value="5">Back</option>
           <option value="6">Arms</option>
         </select>
-        <button className="buttonStyle" onClick={getExcerciseRecommendation}>
+        <button className="buttonStyle" onClick={guardarData}>
           Save Data
         </button>
       </div>
