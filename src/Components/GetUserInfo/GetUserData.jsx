@@ -2,6 +2,8 @@ import { useState, useEffect } from "react";
 import { invoke } from "@tauri-apps/api/tauri";
 import "./GetUserInfo.scss";
 
+import axios from 'axios'
+
 export default function GetUserData() {
   // Estado de la informacion del usuario
 
@@ -93,48 +95,54 @@ export default function GetUserData() {
   const guardarData=()=>{
     const url = 'http://localhost:3000/api/v1/userInfo/createUserInfo';
 
-    let formData = new FormData();
-    formData.append('idUser', JSON.parse(localStorage.getItem("username")));
-    formData.append('age', userAge);
-    formData.append('height', userWeight);
-    formData.append('gender', userGender);
-    formData.append('physicalState', userPhysicalState);
-    formData.append('health', userHealth);
-    formData.append('feedingHabits', eatingHabits);
-    formData.append('fruits', fruit);
-    formData.append('vegetables', vegetables);
-    formData.append('water', water);
-    formData.append('physicalActivity', doesExcercise);
-    formData.append('trainingReason', 1);
-    formData.append('levelPreferred', userTrainingIntensity);
-    formData.append('areaPreferred', userTrainingPreference);
-    formData.append('timeAvailability', userTimeAvailability);
-    formData.append('gymAccess', userGymAccess);
-    formData.append('expStrenght', userExperienceStrength);
-    formData.append('expCardiovascular', userExperienceCardio);
-    formData.append('areaAbdominals', userAreaAbs);
-    formData.append('areaArms', userAreaArm);
-    formData.append('areaCardio', userAreaCardio);
-    formData.append('areaBack', userAreaBack);
-    formData.append('areaChest', userAreaChest);
-    formData.append('trainingDays', userTrainingDays);
-    formData.append('trainingHours', userTrainingHours);
-    formData.append('constantTraining', userTrainingYears);
-    formData.append('sleepingHours', sleepingHours);
-    formData.append('productNothing', userConsumeNothing);
-    formData.append('productCreatina', userConsumeCreatine);
-    formData.append('productPreTraining', userConsumePretrain);
-    formData.append('productProtein', userConsumeProtein);
-    formData.append('productOthers', userConsumeNothing);
-    formData.append('energy1', primarySource);
-    formData.append('energy2', secondarySource);
+    let datos = {
+    'idUser': JSON.parse(localStorage.getItem("username")),
+    'age': userAge,
+    'height': userHeight,
+    'weight':userWeight,
+    'gender': userGender,
+    'physicalState': userPhysicalState,
+    'health': userHealth,
+    'feedingHabits': eatingHabits,
+    'fruits': fruit,
+    'vegetables': vegetables,
+    'water': water,
+    'physicalActivity': doesExcercise,
+    'reasonMusclesIncrease': userTrainingGoalMuscle,
+    'reasonMusclesDefinition': userTrainingGoalDef,
+    'reasonWeightloss': userTrainingGoalWeight,
+    'reasonHealth': userTrainingGoalHealth,
+    'levelPreferred': userTrainingIntensity,
+    'areaPreferred': userTrainingPreference,
+    'timeAvailability': userTimeAvailability,
+    'gymAccess': userGymAccess,
+    'expStrenght': userExperienceStrength,
+    'expCardiovascular': userExperienceCardio,
+    'areaAbdominals': userAreaAbs,
+    'areaArms': userAreaArm,
+    'areaCardio': userAreaCardio,
+    'areaBack': userAreaBack,
+    'areaChest': userAreaChest,
+    'areaLegs': userAreaLegs,
+    'effectiveness': userEffective,
+    'areaFocus': userFocus,
+    'trainingDays': userTrainingDays,
+    'trainingHours': userTrainingHours,
+    'constantTraining': userTrainingYears,
+    'sleepingHours': sleepingHours,
+    'productNothing': userConsumeNothing,
+    'productCreatina': userConsumeCreatine,
+    'productPreTraining': userConsumePretrain,
+    'productProtein': userConsumeProtein,
+    'productOthers': userConsumeOther,
+    'energy1': primarySource,
+    'energy2': secondarySource,
+    }
 
+  
 
-
-    axios.post(url, formData,  {
-      headers: {
-          'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
-      }})
+ 
+    axios.post(url, datos)
     .then((response)=>{
         console.log(response);
 
@@ -674,7 +682,7 @@ export default function GetUserData() {
           <option value="5">Back</option>
           <option value="6">Arms</option>
         </select>
-        <button className="buttonStyle" onClick={getExcerciseRecommendation}>
+        <button className="buttonStyle" onClick={guardarData}>
           Save Data
         </button>
       </div>
