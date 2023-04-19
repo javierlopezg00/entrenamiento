@@ -1,23 +1,31 @@
+import { useEffect } from "react";
+
 import { AiOutlineHome, AiOutlineUser } from "react-icons/ai";
 import { BiDumbbell, BiNews } from "react-icons/bi";
 import { MdLightbulbOutline } from "react-icons/md";
 import MainButton from "../MainButtons/MainButton";
 import { useNavigate } from 'react-router-dom';
-//<MainButton text="Home" icon={<AiOutlineHome/>} link="/"></MainButton>
+
 export default function Footer(){
+    const history = useNavigate();
+
+    useEffect(() => {
+      console.log(localStorage.getItem("username"));
+    }, []);
+    
 
     function signOut() {
-        localStorage.setItem("username", JSON.stringify(""));
-        window.location.reload(false);
-        history=useNavigate()
+        // Remove the username from local storage
+        localStorage.removeItem("username");
+
         history("/SignIn");
     }
 
     return(
         <div>
-            {JSON.parse(localStorage.getItem("username"))!=""?
+            {localStorage.getItem("username") ?
             <div className="footer">
-                
+                {/* <MainButton text="Home" icon={<AiOutlineHome/>} link="/Register"></MainButton> */}
                 <MainButton text="Diet" icon={<BiNews/>} link="/diet"></MainButton>
                 <MainButton text="Coach" icon={<BiDumbbell/>} link="/coach"></MainButton>
                 <MainButton text="Profile" icon={<AiOutlineUser/>} link="/Profile"></MainButton>
@@ -25,7 +33,8 @@ export default function Footer(){
                         <h1>{<MdLightbulbOutline/>}</h1>
                         <p>Logout</p>
                 </div>
-            </div>:
+            </div>
+                :
             <div className="footer">
                 <MainButton text="SignIn" icon={<AiOutlineUser/>} link="/SignIn"></MainButton>
                 <MainButton text="SignUp" icon={<MdLightbulbOutline/>} link="/SignUp"></MainButton>
