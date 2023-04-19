@@ -6,7 +6,7 @@ import pandas as pd
 import numpy as np
 
 # Carga de modelos
-from tensorflow.keras.models import load_model
+from tensorflow import keras
 
 # Preprocesamiento de datos
 from sklearn.preprocessing import StandardScaler
@@ -230,7 +230,7 @@ def get_user_experience(age, height, weight, fitness, health, eating_habits, fru
 
     # Cargar el modelo del archivo .h5
     mlp_path = pkg_resources.resource_filename(__name__, 'models/mlp.h5')
-    mlp = load_model(mlp_path)
+    mlp = keras.models.load_model(mlp_path)
 
     # Etiquetas de experiencia
     user_classes = {
