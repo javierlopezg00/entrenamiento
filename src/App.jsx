@@ -5,7 +5,7 @@ import "./App.css";
 
 import Header from "./Components/Header/Header";
 import Footer from "./Components/Footer/Footer";
-import GetUserInfo from "./Components/GetUserInfo/GetUserInfo";
+import GetUserData from "./Components/GetUserInfo/GetUserData";
 import Diet from "./Pages/Diet/Diet";
 import Coach from "./Pages/Coach/Coach"
 import Exercises from "./Pages/Exercises/Exercises";
@@ -33,7 +33,7 @@ function App() {
     {
       name: "Home",
       path: "/",
-      component: GetUserInfo,
+      component: GetUserData,
     },
     {
       name: "Diet",
