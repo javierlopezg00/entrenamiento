@@ -1,19 +1,9 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from "react";
 import './SignIn.scss'
-<<<<<<< HEAD
-import axios from "axios";
-=======
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios'
->>>>>>> 0177cb0a25be3f03751887e37730c9990ced8ed7
 
 export default function SignIn(){
-    useEffect(() => {
-        
-        axios.request(options)
-          .then(response => setExercises(response.data))
-          .catch(error => console.error(error));
-      }, [muscleSelected]);
 
     //history = useNavigate();
 
@@ -32,38 +22,6 @@ export default function SignIn(){
         event.preventDefault();
         console.log("Username:", username);
         console.log("Password:", password);
-<<<<<<< HEAD
-      
-        const options = {
-          method: 'POST',
-          url: 'https://example.com/login', // Cambiar esto con la URL del servidor de autenticación
-          data: {
-            username: username,
-            password: password
-          },
-          headers: {
-            'Content-Type': 'application/json',
-            //'Authorization': 'Bearer ' + token
-          }
-        };
-      
-        axios(options)
-          .then((response) => {
-            if (response.status === 200) {
-              // Las credenciales del usuario son correctas, permitir acceso
-              console.log('Inicio de sesión exitoso');
-              // Agregar aquí la lógica para redirigir al usuario a la funcionalidad deseada
-            } else {
-              // Las credenciales del usuario son incorrectas
-              console.log('Credenciales incorrectas');
-            }
-          })
-          .catch((error) => {
-            console.error(error);
-          });
-      };
-      
-=======
 
         
 
@@ -80,7 +38,6 @@ export default function SignIn(){
             });
 
     }
->>>>>>> 0177cb0a25be3f03751887e37730c9990ced8ed7
 
     return(
         <div className="mainSigInBox">
