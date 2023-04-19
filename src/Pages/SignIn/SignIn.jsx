@@ -31,7 +31,7 @@ export default function SignIn(){
 
               setUsername("");
               setPassword("");
-              history("/Register");
+              history("/diet");
             });
 
     }
