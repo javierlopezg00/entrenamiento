@@ -58,7 +58,8 @@ export default function GetUserData() {
   const [userTrainingIntensity, setUserTrainingIntensity] = useState("");
 
   //Prediction
-  const [excercisePrediction, setExcercisePrediction] = useState("");
+  const [predictedDifficulty, setPredictedDifficulty] = useState("");
+  const [calories, setCalories] = useState("");
 
   //Nuevos Parámetros
   const [open, setOpen] = useState(2); //Mostrar o No nuevas Opciones
@@ -144,6 +145,21 @@ export default function GetUserData() {
       });
   }
 
+  const getCalories = async () => {
+    setCalories("Loading...");
+
+    const response = await invoke("get_calories", {
+      age: Number(userAge),
+      height: Number(userHeight),
+      weight: Number(userWeight),
+      days: Number(userTrainingDays),
+      hours: Number(userTrainingHours),
+      gender: Number(userGender),
+    });
+    
+    setCalories(response);
+    localStorage.setItem("calories", response);
+  }
 
   /**
    * Validar que los datos del usuario estén completos.
@@ -171,30 +187,53 @@ export default function GetUserData() {
    * Obtener la recomendación del ejercicio.
    */
   const getExcerciseRecommendation = async () => {
-    setExcercisePrediction("Cargando...");
+    setPredictedDifficulty("Loading...");
 
     if (validateUserInformation()) {
-      const response = await invoke("get_excercise_recommendation", {
+      const response = await invoke("determine_user_experience", {
+        prediction: "exp",
         age: Number(userAge),
         height: Number(userHeight),
         weight: Number(userWeight),
+        fitness: Number(userPhysicalState),
+        health: Number(userHealth),
+        eatingHabits: Number(eatingHabits),
+        fruitConsumption: Number(fruit),
+        veggiesConsumption: Number(vegetables),
         gender: userGender,
-        gymAccess: Boolean(userGymAccess),
-        strengthExp: Boolean(userExperienceStrength),
-        cardioExp: Boolean(userExperienceCardio),
+        trainingDays: userTrainingDays,
+        trainingHours: userTrainingHours,
+        constantTraining: userTrainingYears,
+        focus: userTrainingGoalWeight,
+        efficacy: userTrainingGoalHealth,
+        sleepHours: sleepingHours,
+        energySrc1: primarySource,
+        energySrc2: secondarySource,
+        waterConsumption: water,
+        trainingObjective: userTrainingGoalMuscle,
         timeAvailable: userTimeAvailability,
-        trainingGoal: userTrainingGoal,
-        trainingPreference: userTrainingPreference,
-        trainingIntensity: userTrainingIntensity,
+        strengthExp: userExperienceStrength,
+        cardioExp: userExperienceCardio,
+        gymAccess: userGymAccess,
+        preferredArea: userTrainingPreference,
+        intensity: userTrainingIntensity,
+        physicalActivities: doesExcercise,
+        trainingAreas: userAreaAbs,
+        productConsumption: userConsumeNothing,
       });
-      setExcercisePrediction(response);
+      setPredictedDifficulty(response);
+      localStorage.setItem("predictedDifficulty", response);
     } else {
-      setExcercisePrediction("Por favor, complete todos los campos.");
+      setPredictedDifficulty("Por favor, complete todos los campos.");
     }
   };
 
   useEffect(() => {
     setOpen(() => doesExcercise);
+
+    if (localStorage.getItem("predictedDifficulty")) {
+      setPredictedDifficulty(localStorage.getItem("predictedDifficulty"));
+    }
   }, [doesExcercise]);
 
 
@@ -681,8 +720,18 @@ export default function GetUserData() {
 
       <div className="getInfoContainer">
         <p className="textStyle">
-          Recomendación de Ejercicio: {excercisePrediction}
+          Dificultad recomendada: {predictedDifficulty}
         </p>
+      </div>
+
+      <div className="getInfoContainer">
+        {calories.length === 0 ? (
+          <button className="buttonStyle" onClick={getCalories}>
+            Calculate Calories
+          </button>
+        ) : (
+          <p className="textStyle">Calories: {calories}</p>
+        )}
       </div>
       <div className="medium-sep" />
     </div>
