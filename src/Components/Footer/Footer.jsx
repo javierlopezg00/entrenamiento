@@ -6,7 +6,7 @@ import MainButton from "../MainButtons/MainButton";
 export default function Footer(){
 
     function signOut() {
-        localStorage.setItem("username", "");
+        localStorage.setItem("username", JSON.stringify(""));
         window.location.reload(false);
     }
 
