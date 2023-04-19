@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import { invoke } from "@tauri-apps/api/tauri";
 import { Routes, Route, Navigate} from "react-router-dom";
 import "./App.css";
@@ -14,6 +15,14 @@ import SignUp from "./Pages/SignUp/SignUp";
 import Profile from "./Pages/Profile/Profile";
 
 function App() {
+  const navigate = useNavigate();
+  
+  useEffect(() => {
+    if (getUsername() !== '') {
+      navigate('/diet');
+    }
+  }, []);
+  
 
   const [views, setViews]=useState([])
   
@@ -114,7 +123,7 @@ function App() {
           {username != '' ?
         <Route path="*" element={<Navigate replace to="/" />} />
           :
-        <Route path="*" element={<Navigate replace to="/SignIn" />} />
+            <Route path="*" element={<Navigate replace to="/SignUp" />} />
           }
       </Routes>
       <Footer />

@@ -1,4 +1,5 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
 import './Profile.scss';
 import { useState, useEffect } from "react";
 import axios from 'axios'
@@ -8,8 +9,13 @@ import axios from 'axios'
 export default function Profile(){
 
             const [userData, setUserData] = useState({})
+            const navigate = useNavigate();
 
             useEffect(() => {
+                if (localStorage.getItem("username") === null || localStorage.getItem("username") === undefined || localStorage.getItem("username") === "") {
+                  navigate('/SignIn');
+                }
+              
                 let userName = JSON.parse(localStorage.getItem("username"));
                 const url = 'http://localhost:3000/api/v1/userInfo/';
     
