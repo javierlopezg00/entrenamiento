@@ -1,6 +1,6 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { invoke } from "@tauri-apps/api/tauri";
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route, Navigate} from "react-router-dom";
 import "./App.css";
 
 import Header from "./Components/Header/Header";
@@ -14,17 +14,11 @@ import SignUp from "./Pages/SignUp/SignUp";
 import Profile from "./Pages/Profile/Profile";
 
 function App() {
-  const views = [
-    {
-      name: "SignIn",
-      path: "/SignIn",
-      component: SignIn,
-    },
-    {
-      name: "SignUp",
-      path: "/SignUp",
-      component: SignUp,
-    },
+
+  const [views, setViews]=useState([])
+  
+
+  const viewsLogged = [
     {
       name: "Profile",
       path: "/Profile",
@@ -79,18 +73,51 @@ function App() {
       name: "Glutes",
       path: "/Glutes",
       component: Exercises
-    },
-    
+    }
   ];
+
+  const viewsNotLogged = [
+    
+    {
+      name: "SignIn",
+      path: "/SignIn",
+      component: SignIn,
+    },
+    {
+      name: "SignUp",
+      path: "/SignUp",
+      component: SignUp,
+    }
+  ];
+
+  const getUsername=()=>{
+    const localUsername = localStorage.getItem('username');
+    return localUsername ? JSON.parse(localUsername) : '';
+  }
+
+  const[username, setUsername] = useState(getUsername);
+
+  useEffect(()=>{
+    localStorage.setItem('username', JSON.stringify(username));
+    console.log(localStorage.getItem('username'))
+  })
 
   return (
     <>
       <Header />
+      {username!=''? 
       <Routes>
-        {views.map((view) => (
-          <Route key={view.name} path={view.path} element={view.component()} />
+        {viewsLogged.map((view) => (
+          <Route key={view.name}  path={view.path} element={view.component()} />
         ))}
-      </Routes>
+        <Route path="*" element={<Navigate replace to="/" />} />
+      </Routes>:
+      <Routes>
+      {viewsNotLogged.map((view) => (
+        <Route key={view.name}  path={view.path} element={view.component()} />
+      ))}
+      <Route path="*" element={<Navigate replace to="/SignIn" />} />
+    </Routes>}
       <Footer />
     </>
   );
