@@ -8,7 +8,7 @@
     "build": "vite build",
     "preview": "vite preview",
     "tauri": "tauri",
-    "pyinstaller": "IF NOT EXIST .\\src-tauri\\src\\model\\exe\\dist\\training-x86_64-pc-windows-msvc.exe (pyinstaller --specpath src-tauri/src/model/exe/ --distpath src-tauri/src/model/exe/dist/ --workpath src-tauri/src/model/exe/build/ --onefile --console src-tauri/src/model/training.py --name training-x86_64-pc-windows-msvc)"
+    "pyinstaller": "IF NOT EXIST .\\src-tauri\\src\\model\\exe\\dist\\training-x86_64-pc-windows-msvc.exe (py -3.7 -m PyInstaller --specpath src-tauri/src/model/exe/ --distpath src-tauri/src/model/exe/dist/ --workpath src-tauri/src/model/exe/build/ --onefile --console src-tauri/src/model/training.py --name training-x86_64-pc-windows-msvc)"
   },
   "dependencies": {
     "@tauri-apps/api": "^1.2.0",
