@@ -119,7 +119,15 @@ export default function GetUserData() {
     formData.append('areaChest', userAreaChest);
     formData.append('trainingDays', userTrainingDays);
     formData.append('trainingHours', userTrainingHours);
-    formData.append('constantTraining' )
+    formData.append('constantTraining', userTrainingYears);
+    formData.append('sleepingHours', sleepingHours);
+    formData.append('productNothing', userConsumeNothing);
+    formData.append('productCreatina', userConsumeCreatine);
+    formData.append('productPreTraining', userConsumePretrain);
+    formData.append('productProtein', userConsumeProtein);
+    formData.append('productOthers', userConsumeNothing);
+    formData.append('energy1', primarySource);
+    formData.append('energy2', secondarySource);
 
 
 
@@ -283,7 +291,7 @@ export default function GetUserData() {
         <select
           className="inputStyle"
           id="selectGetUser"
-          onChange={(e) => setUserTrainingHours(e.target.value)}
+          onChange={(e) => setUserTrainingYears(e.target.value)}
         >
           <option value="-1" disabled selected>
             How many years have you been training?
