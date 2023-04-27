@@ -1,16 +1,18 @@
 import { useState, useEffect } from "react";
 import { invoke } from "@tauri-apps/api/tauri";
+import { useNavigate } from "react-router-dom";
 import "./GetUserInfo.scss";
-import { useNavigate } from 'react-router-dom';
 
 import axios from 'axios'
 
 export default function GetUserData() {
+  let navigate = useNavigate();
+  
   // Estado de la informacion del usuario
 
   function signOut() {
-    localStorage.setItem("username", JSON.stringify(""));
-    window.location.reload(false);
+    localStorage.removeItem("username");
+    navigate("/SignIn");
 }
 
   //Formulario 1
@@ -152,7 +154,7 @@ export default function GetUserData() {
     axios.post(url, datos)
     .then((response)=>{
         console.log(response);
-        signOut()
+        navigate("/diet");
     })
     .catch((response)=>{
         console.log(response);
@@ -388,7 +390,7 @@ export default function GetUserData() {
           type="checkbox"
           id="cardio"
           autoComplete="off"
-          onChange={(e) =>  e.target.value  == 1?setUserAreaCardio("1"):setUserAreaCardio("0")}
+          onChange={(e) =>  e.target.checked ? setUserAreaCardio("1"):setUserAreaCardio("0")}
         ></input>
         <label for="cardio">Cardio</label>
         <input
@@ -396,7 +398,7 @@ export default function GetUserData() {
           type="checkbox"
           id="chest"
           autoComplete="off"
-          onChange={(e) =>  e.target.value  == 1?setUserAreaChest("1"):setUserAreaChest("0")}
+          onChange={(e) =>  e.target.checked ? setUserAreaChest("1"):setUserAreaChest("0")}
         ></input>
         <label for="chest">Chest</label>
         <input
@@ -404,7 +406,7 @@ export default function GetUserData() {
           type="checkbox"
           id="back"
           autoComplete="off"
-          onChange={(e) =>  e.target.value  == 1? setUserAreaBack("1"):setUserAreaBack("0")}
+          onChange={(e) =>  e.target.checked ?  setUserAreaBack("1"):setUserAreaBack("0")}
         ></input>
         <label for="back">Back</label>
         <input
@@ -412,7 +414,7 @@ export default function GetUserData() {
           type="checkbox"
           id="arms"
           autoComplete="off"
-          onChange={(e) =>  e.target.value  == 1?setUserAreaArm("1"):setUserAreaArm("0")}
+          onChange={(e) =>  e.target.checked ? setUserAreaArm("1"):setUserAreaArm("0")}
         ></input>
         <label for="arms">Arms</label>
         <input
@@ -420,7 +422,7 @@ export default function GetUserData() {
           type="checkbox"
           id="legs"
           autoComplete="off"
-          onChange={(e) => e.target.value  == 1? setUserAreaLegs("1"):setUserAreaLegs("0")}
+          onChange={(e) => e.target.checked ?  setUserAreaLegs("1"):setUserAreaLegs("0")}
         ></input>
         <label for="legs">Legs</label>
         <input
@@ -428,7 +430,7 @@ export default function GetUserData() {
           type="checkbox"
           id="abs"
           autoComplete="off"
-          onChange={(e) =>  e.target.value  == 1? setUserAreaAbs("1"):setUserAreaAbs("0")}
+          onChange={(e) =>  e.target.checked ?  setUserAreaAbs("1"):setUserAreaAbs("0")}
         ></input>
         <label for="abs">Abs</label>
         </div>
@@ -477,7 +479,7 @@ export default function GetUserData() {
           type="checkbox"
           id="creatine"
           autoComplete="off"
-          onChange={(e) =>  e.target.value  == 1?setUserConsumeCreatine("1"):setUserConsumeCreatine("0")}
+          onChange={(e) =>  e.target.checked ? setUserConsumeCreatine("1"):setUserConsumeCreatine("0")}
         ></input>
         <label for="creatine">Creatine</label>
         <input
@@ -485,7 +487,7 @@ export default function GetUserData() {
           type="checkbox"
           id="protein"
           autoComplete="off"
-          onChange={(e) =>  e.target.value  == 1?setUserConsumeProtein("1"):setUserConsumeProtein("0")}
+          onChange={(e) =>  e.target.checked ? setUserConsumeProtein("1"):setUserConsumeProtein("0")}
         ></input>
         <label for="protein">Protein</label>
         <input
@@ -493,7 +495,7 @@ export default function GetUserData() {
           type="checkbox"
           id="prework"
           autoComplete="off"
-          onChange={(e) =>  e.target.value  == 1? setUserConsumePretrein("1"):setUserConsumePretrein("0")}
+          onChange={(e) =>  e.target.checked ?  setUserConsumePretrein("1"):setUserConsumePretrein("0")}
         ></input>
         <label for="prework">Pre-workout</label>
         <input
@@ -501,7 +503,7 @@ export default function GetUserData() {
           type="checkbox"
           id="nothing"
           autoComplete="off"
-          onChange={(e) =>  e.target.value  == 1?setUserConsumeNothing("1"):setUserConsumeNothing("0")}
+          onChange={(e) =>  e.target.checked ? setUserConsumeNothing("1"):setUserConsumeNothing("0")}
         ></input>
         <label for="nothing">Nothing</label>
         <input
@@ -509,7 +511,7 @@ export default function GetUserData() {
           type="checkbox"
           id="other"
           autoComplete="off"
-          onChange={(e) => e.target.value  == 1? setUserConsumeOther("1"):setUserConsumeOther("0")}
+          onChange={(e) => e.target.checked ?  setUserConsumeOther("1"):setUserConsumeOther("0")}
         ></input>
         <label for="other">Other</label>
         </div>
@@ -628,7 +630,7 @@ export default function GetUserData() {
           type="checkbox"
           id="weight"
           autoComplete="off"
-          onChange={(e) =>  e.target.value  == 1?setUserTrainingGoalWight("1"):setUserTrainingGoalWight("0")}
+          onChange={(e) =>  e.target.checked ? setUserTrainingGoalWight("1"):setUserTrainingGoalWight("0")}
         ></input>
         <label for="weight">Loosing weight</label>
         <input
@@ -636,7 +638,7 @@ export default function GetUserData() {
           type="checkbox"
           id="mass"
           autoComplete="off"
-          onChange={(e) =>  e.target.value  == 1?setUserTrainingGoalMuscle("1"):setUserTrainingGoalMuscle("0")}
+          onChange={(e) =>  e.target.checked ? setUserTrainingGoalMuscle("1"):setUserTrainingGoalMuscle("0")}
         ></input>
         <label for="mass">Increasing muscle mass</label>
         <input
@@ -644,7 +646,7 @@ export default function GetUserData() {
           type="checkbox"
           id="def"
           autoComplete="off"
-          onChange={(e) =>  e.target.value  == 1? setUserTrainingGoalDef("1"):setUserTrainingGoalDef("0")}
+          onChange={(e) =>  e.target.checked ?  setUserTrainingGoalDef("1"):setUserTrainingGoalDef("0")}
         ></input>
         <label for="def">Muscle definition</label>
         <input
@@ -652,7 +654,7 @@ export default function GetUserData() {
           type="checkbox"
           id="healthgoal"
           autoComplete="off"
-          onChange={(e) =>  e.target.value  == 1?setUserTrainingGoalHealth("1"):setUserTrainingGoalHealth("0")}
+          onChange={(e) =>  e.target.checked ? setUserTrainingGoalHealth("1"):setUserTrainingGoalHealth("0")}
         ></input>
         <label for="healthgoal">Overall Health</label>
         </div>

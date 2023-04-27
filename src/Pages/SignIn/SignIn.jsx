@@ -4,8 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import axios from 'axios'
 
 export default function SignIn(){
-
-    //history = useNavigate();
+    const history = useNavigate();
 
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
@@ -23,18 +22,16 @@ export default function SignIn(){
         console.log("Username:", username);
         console.log("Password:", password);
 
-        
-
-
         const url = 'http://localhost:3000/api/v1/users/login/';
 
         axios.get(url+username).then(response => response.data)
             .then((data) => {
               localStorage.setItem("username", data[0].id);
-              console.log(data);
-              //history("/diet");
-              window.location.reload(true);
+            //   console.log(data);
 
+              setUsername("");
+              setPassword("");
+              history("/diet");
             });
 
     }

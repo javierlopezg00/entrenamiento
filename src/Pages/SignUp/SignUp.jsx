@@ -19,12 +19,6 @@ export default function SignUp(){
 
     const history = useNavigate();
 
-    useEffect(() => {
-        localStorage.setItem("username", JSON.stringify(id));
-        
-
-      }, [id]);
-
     const createUser =  () => {
     
         const url = 'http://localhost:3000/api/v1/users/createUser';
@@ -53,9 +47,8 @@ export default function SignUp(){
         .catch((response)=>{
             console.log(response);
         });
-     
-     
 
+        history("/Register");
       }
 
     return(

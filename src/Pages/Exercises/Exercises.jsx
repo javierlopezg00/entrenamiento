@@ -18,7 +18,7 @@ export default function Exercises() {
         'X-RapidAPI-Key': '2df32850c6mshc72ac3b6b81a029p1d3bc6jsn535caa83d8bc',
         'X-RapidAPI-Host': 'musclewiki.p.rapidapi.com'
       }
-    };
+    }; 
     axios.request(options)
       .then(response => setExercises(response.data))
       .catch(error => console.error(error));
