@@ -21,7 +21,7 @@ export default function Profile(){
                 const url = 'http://localhost:3000/api/v1/userInfo/';
                 const personalInfoURL = 'http://localhost:3000/api/v1/users/';
     
-                axios.get(url+1).then(response => response.data)
+                axios.get(url+userName).then(response => response.data)
                 .then((data) => {
                   data[0].caloriesPrediction = localStorage.getItem("calories");
                   data[0].trainingPrediction = localStorage.getItem("predictedDifficulty");
