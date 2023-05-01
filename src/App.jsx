@@ -98,6 +98,11 @@ function App() {
       name: "SignUp",
       path: "/SignUp",
       component: SignUp,
+    },
+    {
+      name: "Exercises",
+      path: "/:muscle",
+      component: Exercises,
     }
   ];
 
