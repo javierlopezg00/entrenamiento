@@ -5,25 +5,32 @@ import React, { useState, useEffect } from 'react';
 export default function DietBox() {
   const [diet, setDiet] = useState(null);
   const [calories, setCalories] = useState(-1);
+  const [maxCalories, setMaxCalories] = useState(10000);
+
+const API_KEY = 'c8551bcf446d4c15b470468ab996cf62';
+const API_URL = 'https://api.spoonacular.com/recipes/findByNutrients';
+
+const getRecipesByCalories = (calories) => {
+  const params = {
+    apiKey: API_KEY,
+    maxCalories: calories,
+    number: 24, // Number of recipes you want to get
+  };
+
+  return axios.get(API_URL, { params })
+    .then((response) => setDiet(response.data))
+    .catch((error) => console.log(error));
+};
 
   useEffect(() => {
-    const options = {
-      method: 'GET',
-      url: 'https://edamam-recipe-search.p.rapidapi.com/search',
-      params: {q: 'chicken'},
-      headers: {
-        'X-RapidAPI-Key': '2df32850c6mshc72ac3b6b81a029p1d3bc6jsn535caa83d8bc',
-        'X-RapidAPI-Host': 'edamam-recipe-search.p.rapidapi.com'
-      }
-    };
-
-    axios.request(options)
-      .then(response => setDiet(response.data))
-      .catch(error => console.error(error));
+    
     
       if (localStorage.getItem('calories')) {
         setCalories(localStorage.getItem('calories'));
       }
+
+      getRecipesByCalories(localStorage.getItem('calories')? localStorage.getItem('calories'): 1000);
+
   }, []);
 
   return (
@@ -39,14 +46,14 @@ export default function DietBox() {
       <div className="dietContainerBox">
         {
           diet ? (
-            diet.hits.map(recipeN => (
-              <div className="recipeBox" key={recipeN.recipe.label}>
+            diet.map(recipeN => (
+              <div className="recipeBox" key={recipeN.id}>
                 <div className="flexBox">
-                  <p>kcal: {recipeN.recipe.calories.toFixed(2)}</p>
-                  <p id='displayR'> {recipeN.recipe.cuisineType}</p> <p>'cuisine</p>
+                  <p>kcal: {recipeN.calories.toFixed(2)}</p>
+                  <p id='displayR'> {recipeN.fat}</p> <p> fat</p>
                 </div>
-                <h1 id='title'>{recipeN.recipe.label}</h1>
-                <img className='imagen' src={recipeN.recipe.image} alt={recipeN.recipe.label} />
+                <h1 id='title'>{recipeN.title}</h1>
+                <img className='imagen' src={recipeN.image} alt={recipeN.title} />
                 <button className='recipeButton'>Recipe</button>
               </div>
             ))) : (

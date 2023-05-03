@@ -8,7 +8,7 @@
     "build": "vite build",
     "preview": "vite preview",
     "tauri": "tauri",
-    "pyinstaller_nn": "IF NOT EXIST .\\src-tauri\\src\\model\\exe\\dist_nn\\training-x86_64-pc-windows-msvc.exe (py -3.7 -m PyInstaller --specpath src-tauri/src/model/exe/ --distpath src-tauri/src/model/exe/dist_nn/ --workpath src-tauri/src/model/exe/build_nn/ --onefile --console src-tauri/src/model/training.py --name training-x86_64-pc-windows-msvc --add-data ../models/mlp.h5;models --add-data %LOCALAPPDATA%/Programs/Python/Python311/Lib/site-packages/tensorflow/python;. --hidden-import sklearn.cluster --hidden-import tensorflow.keras.models --hidden-import tensorflow.keras.layers --hidden-import tensorflow.autograph)",
+    "pyinstaller_nn": "IF NOT EXIST .\\src-tauri\\src\\model\\exe\\dist_nn\\training-x86_64-pc-windows-msvc.exe (py -3.7 -m PyInstaller --specpath src-tauri/src/model/exe/ --distpath src-tauri/src/model/exe/dist_nn/ --workpath src-tauri/src/model/exe/build_nn/ --onefile --console src-tauri/src/model/training.py --name training-x86_64-pc-windows-msvc --add-data ../models/mlp.h5;models --add-data C:/RoboDK/Python37/Lib/site-packages/tensorflow/python;. --hidden-import sklearn.cluster --hidden-import tensorflow.keras.models --hidden-import tensorflow.keras.layers --hidden-import tensorflow.autograph)",
     "pyinstaller_linreg": "IF NOT EXIST .\\src-tauri\\src\\model\\exe\\dist_linreg\\calories-x86_64-pc-windows-msvc.exe (py -3.7 -m PyInstaller --specpath src-tauri/src/model/exe/ --distpath src-tauri/src/model/exe/dist_linreg/ --workpath src-tauri/src/model/exe/build_linreg/ --onefile --console src-tauri/src/model/caloriesmodelo.py --name calories-x86_64-pc-windows-msvc --add-data ../models/linear_reg.pkl;models)"
   },
   "dependencies": {

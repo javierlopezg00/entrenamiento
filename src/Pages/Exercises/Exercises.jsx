@@ -9,11 +9,13 @@ export default function Exercises() {
   const [exercises, setExercises] = useState(null);
   const muscleSelected = window.location.pathname.substring(1);
 
+  var difficulty = localStorage.getItem("dificultad")
+
   useEffect(() => {
     const options = {
       method: 'GET',
       url: 'https://musclewiki.p.rapidapi.com/exercises',
-      params: {muscle: bodySelected, category: 'cables'},
+      params: {muscle: bodySelected, difficulty: difficulty},
       headers: {
         'X-RapidAPI-Key': '2df32850c6mshc72ac3b6b81a029p1d3bc6jsn535caa83d8bc',
         'X-RapidAPI-Host': 'musclewiki.p.rapidapi.com'

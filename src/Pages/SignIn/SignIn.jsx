@@ -19,9 +19,6 @@ export default function SignIn(){
 
     const handleSubmit = (event) => {
         event.preventDefault();
-        console.log("Username:", username);
-        console.log("Password:", password);
-
         const url = 'http://localhost:3000/api/v1/users/login/';
 
         axios.get(url+username).then(response => response.data)
@@ -31,7 +28,7 @@ export default function SignIn(){
 
               setUsername("");
               setPassword("");
-              history("/diet");
+              history("/Profile");
             });
 
     }
