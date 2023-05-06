@@ -17,6 +17,10 @@ export default function Footer(){
     function signOut() {
         // Remove the username from local storage
         localStorage.removeItem("username");
+        localStorage.removeItem("calories");
+        localStorage.removeItem("predictedDifficulty");
+
+
 
         history("/SignIn");
     }

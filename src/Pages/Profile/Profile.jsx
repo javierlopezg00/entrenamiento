@@ -21,7 +21,7 @@ export default function Profile(){
                 const url = 'http://localhost:3000/api/v1/userInfo/';
                 const personalInfoURL = 'http://localhost:3000/api/v1/users/';
     
-                axios.get(url+1).then(response => response.data)
+                axios.get(url+userName).then(response => response.data)
                 .then((data) => {
                   data[0].caloriesPrediction = localStorage.getItem("calories");
                   data[0].trainingPrediction = localStorage.getItem("predictedDifficulty");
@@ -29,7 +29,7 @@ export default function Profile(){
                   setUserData(data[0]);
                   //history("/diet");
                 });
-                
+
                 axios.get(personalInfoURL+userName).then(response => response.data)
                 .then((data) => {
                   //localStorage.setItem("username", data[0].id);
@@ -103,19 +103,10 @@ export default function Profile(){
                 }
               }
 
-              function trainingPredictionConvert(trainingPred){
-                if(trainingPred == 1){
-                  localStorage.setItem("dificultad", "Intermediate");
-                }else if(trainingPred == 2){
-                  localStorage.setItem("dificultad", "Advanced");
-                }else{
-                  localStorage.setItem("dificultad", "Beginner");
-                }
-              }
-              trainingPredictionConvert();
 
     return(
         <div className="mainProfileBox">
+            <h3>Welcome back {personalData.firstName} {personalData.LastName}</h3> 
             <hr/>
             <h2></h2>
             <div className="infoDiv" >  
